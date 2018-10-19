@@ -9,7 +9,7 @@ import hashlib, time
 
 import logging
 
-def getPage(page_url, BASE_PATH):
+def getPage(page_url, BASE_PATH, time_to_sleep_before_network = 10):
     logging.debug("Page URL:{}".format(page_url))
     print(page_url)
     
@@ -27,7 +27,7 @@ def getPage(page_url, BASE_PATH):
 
     logging.debug("File does not exist: downloading")
     print("File does not exist: downloading")
-    time.sleep(10)
+    time.sleep(time_to_sleep_before_network)
     print("Sleep over")
     r = requests.get(page_url)
     #https://stackoverflow.com/questions/934160/write-to-utf-8-file-in-python
@@ -35,3 +35,13 @@ def getPage(page_url, BASE_PATH):
     f.write(r.text)
     f.close()
     return r.text
+
+
+import wget
+def downloadFile(fileURL, PATH_TO_FILE, time_to_sleep_before_network = 10):
+    f_name = fileURL.split("/")[-1]
+    print("Have file name:{}".format(f_name))
+    if not os.path.exists(PATH_TO_FILE+f_name):
+        time.sleep(time_to_sleep_before_network)
+        wget.download(fileURL, PATH_TO_FILE+f_name)  
+    

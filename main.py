@@ -13,12 +13,12 @@ logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
 
 import globals
-from utils import getPage
+from utils import getPage, downloadFile
 from parsePage import parseNakazPage
 
 import os, codecs
 
-nakaz_counter = 1
+
 
 
 new_page_num = "-1"
@@ -30,3 +30,8 @@ while new_page_num <> "2":
             globals.PAGE_FILES_DIR)
     new_page_num = parseNakazPage(r)
     print("New new page num:{}".format(new_page_num))
+
+
+downloadFile(globals.MOZ_BASE_URL+"uploads/1/7694-dn_20181010_1840.pdf", 
+    "c:\\Dev\\04. Python\\05. MOZ nakaz downloader\\" 
+    )

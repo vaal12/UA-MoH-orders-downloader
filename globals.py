@@ -6,3 +6,5 @@ MOZ_BASE_URL = "http://moz.gov.ua/"
 BASE_PAGE_URL = "http://moz.gov.ua/nakazi-moz?"
 
 nakaz_counter = 1
+
+INTER_DOWNLOAD_SLEEP = 2  #NOT YET USED
