@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 
 import logging, os, codecs
 
-from globals import RESULT_FILES_DIR, nakaz_counter, MOZ_BASE_URL, INTER_DOWNLOAD_SLEEP
+from globals import RESULT_FILES_DIR, nakaz_counter, MOZ_BASE_URL
+from globals import INTER_DOWNLOAD_SLEEP, DIR_NAME_LEN
 from utils import getPage, downloadFile
 
 def parseNakazPage(page_html):
@@ -18,9 +19,10 @@ def parseNakazPage(page_html):
         # print((u"Text:{}".format("qwe1")).encode("utf-8"))
         nakaz_name = unicode(nakaz_link.get_text()).strip()
         nakaz_name = nakaz_name.replace("\"", "_")
+	    nakaz_name = nakaz_name.replace("/", "_")
         logging.debug(nakaz_name)
         nakaz_name = nakaz_name.replace(u"Наказ МОЗ України", "N_M_U")
-        dir_name_short = nakaz_name[:70]+""
+        dir_name_short = nakaz_name[:DIR_NAME_LEN]+""
         full_dir_name = u"{}{:04d}. {}\\".format(RESULT_FILES_DIR, nakaz_counter, dir_name_short.strip())
         if not os.path.exists(full_dir_name):
             os.mkdir(full_dir_name)
