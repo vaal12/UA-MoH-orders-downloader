@@ -18,7 +18,7 @@ from parsePage import parseNakazPage
 
 import os, codecs, datetime
 
-PAGE_NUMBER_TO_STOP_AT = "3"
+PAGE_NUMBER_TO_STOP_AT = "2"
 
 
 
