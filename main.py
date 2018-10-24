@@ -16,10 +16,18 @@ import globals
 from utils import getPage, downloadFile
 from parsePage import parseNakazPage
 
-import os, codecs
+import os, codecs, datetime
 
-PAGE_NUMBER_TO_STOP_AT = "2"
+PAGE_NUMBER_TO_STOP_AT = "3"
 
+
+
+f = codecs.open("nakazy.html", "w", "utf-8")
+f.write(globals.HTML_PREAMBULE)
+f.write(datetime.datetime.now().strftime("%d:%m:%Y %H:%M"))
+f.write("\n\n<br><br>")
+globals.NAKAZY_FILE_TO_WRITE = f
+# print(globals.NAKAZY_FILE_TO_WRITE)
 
 new_page_num = "-1"
 r = getPage(globals.BASE_PAGE_URL, globals.PAGE_FILES_DIR)
@@ -32,3 +40,8 @@ while new_page_num <> PAGE_NUMBER_TO_STOP_AT:
     print("New new page num:{}".format(new_page_num))
 
 
+
+globals.NAKAZY_FILE_TO_WRITE.write(globals.HTML_AFTERAMBLE)
+globals.NAKAZY_FILE_TO_WRITE.close()
+
+# os.system("c:\Portables\GoogleChromePortable\GoogleChromePortable.exe nakazy.html")

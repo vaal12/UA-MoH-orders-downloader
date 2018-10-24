@@ -9,6 +9,22 @@ BASE_PAGE_URL = "http://moz.gov.ua/nakazi-moz?"
 
 nakaz_counter = 1
 
-INTER_DOWNLOAD_SLEEP = 10  
+INTER_DOWNLOAD_SLEEP = 1  
 
 DIR_NAME_LEN = 60
+
+HTML_PREAMBULE ='''
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title> qwe1 </title>
+ </head> 
+
+<body>
+'''
+
+HTML_AFTERAMBLE = '''
+    </body>
+'''
+
+NAKAZY_FILE_TO_WRITE = None
