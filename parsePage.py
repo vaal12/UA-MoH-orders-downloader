@@ -13,13 +13,22 @@ def parseAndDownloadNakaz(nakaz_dir, nakazURL, nakazName):
     f.write("URL:\n"+nakazURL+"\n\n")
 
     globals.NAKAZY_FILE_TO_WRITE.write(
-        "MOZ site URL:{} <br>".format(nakazURL)
+            u"<a href=\"#\" id=\"{}\" class=\"moreStyle\">More</a><br>".format(
+                    globals.nakaz_counter
+        )
+    )
+           
+    globals.NAKAZY_FILE_TO_WRITE.write(
+        u"<div id=\"{}_moreInfo\" style=\"display: none\" class=\"expandableDIV\">".format(
+            globals.nakaz_counter
+        )
     )
 
-    #     {}).format(
-    #                     unicode(full_dir_name, nakaz_link.get_text()).strip()
-    #     )
-    # )
+    globals.NAKAZY_FILE_TO_WRITE.write(
+        "MOZ site URL: <div><a href=\"{}\">{}</a></div>".format(nakazURL,nakazURL)
+    )
+
+    
     nakaz_content = getPage(nakazURL, nakaz_dir,
         time_to_sleep_before_network=globals.INTER_DOWNLOAD_SLEEP)
     
@@ -29,15 +38,18 @@ def parseAndDownloadNakaz(nakaz_dir, nakazURL, nakazName):
     f.write("Text:\n")
     # print (nakaz_soup.select("div.editor"))
     body_text = ""
-    for string in nakaz_soup.select("div.editor")[0].stripped_strings:
+    # for string in nakaz_soup.select("div.editor")[0].stripped_strings:
+    for string in nakaz_soup.select("div.editor")[0].strings:
         # print(repr(string))
-        body_text += string
+        if len(string)>1 and string<>"&nbsp":
+            body_text += string+"\n"
         f.write(string)
     f.close()
 
     globals.NAKAZY_FILE_TO_WRITE.write(
-        u"Text:{} <br>".format(body_text)
+        u"Text:<div><pre style=\"white-space: pre-wrap;\">{}</pre><hr></div><br>".format(body_text)
     )
+    globals.NAKAZY_FILE_TO_WRITE.write(u"</div>")
 
     down_links = nakaz_soup.select("a.download__link")
     for link_tag in down_links:
@@ -77,28 +89,30 @@ def parseNakazPage(page_html):
 
         nakaz_name_for_HTML = nakaz_link.get_text().strip().replace("\"", "&quot;")
 
-        # print(globals.NAKAZY_FILE_TO_WRITE)
         globals.NAKAZY_FILE_TO_WRITE.write(
-            u"<a href=\"file://{}\"> {:04d}.{} </a><br>\n\n".format(
+            "<div style=\"padding:20px\">"
+        )
+
+
+        globals.NAKAZY_FILE_TO_WRITE.write(
+            u"<a style=\"font-size:20px\" href=\"file://{}\"> {:04d}.{} </a><br>\n\n".format(
                 full_dir_name,
                 globals.nakaz_counter,
                 nakaz_name_for_HTML
             )
         )
-        # globals.NAKAZY_FILE_TO_WRITE.write(
-        #     nakaz_name_for_HTML) 
-        # globals.NAKAZY_FILE_TO_WRITE.write(
-        #     "   ")
-
-        
+                
         if not os.path.exists(full_dir_name):
             logging.debug(full_dir_name+"\\info.txt")
             os.mkdir(full_dir_name)
-            parseAndDownloadNakaz(full_dir_name, nakaz_actual_link,
-                    nakaz_name)
+        
+        parseAndDownloadNakaz(full_dir_name, nakaz_actual_link,
+                nakaz_name)
+
+        globals.NAKAZY_FILE_TO_WRITE.write("</div>")
             
-        #END: if not os.path.exists(full_dir_name):
-        else: print("Not downloading nakaz")
+        # #END: if not os.path.exists(full_dir_name):
+        # else: print("Not downloading nakaz")
 
         globals.nakaz_counter +=1
 

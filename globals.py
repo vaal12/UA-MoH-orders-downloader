@@ -15,16 +15,24 @@ DIR_NAME_LEN = 60
 
 HTML_PREAMBULE ='''
 <html>
- <head>
-  <meta charset="UTF-8">
-  <title> qwe1 </title>
- </head> 
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="custom.js"></script>
+        <title> qwe1 </title>
+    </head> 
+    <body>
 
-<body>
+    <a href="#" id="expandAllLink"> Expand All </a> <br>
+
+
+
 '''
 
 HTML_AFTERAMBLE = '''
+    
     </body>
+</html>
 '''
 
 NAKAZY_FILE_TO_WRITE = None
