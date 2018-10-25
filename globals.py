@@ -9,7 +9,7 @@ BASE_PAGE_URL = "http://moz.gov.ua/nakazi-moz?"
 
 nakaz_counter = 1
 
-INTER_DOWNLOAD_SLEEP = 1  
+INTER_DOWNLOAD_SLEEP = 20  
 
 DIR_NAME_LEN = 60
 
