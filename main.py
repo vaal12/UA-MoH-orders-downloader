@@ -18,11 +18,12 @@ from parsePage import parseNakazPage
 
 import os, codecs, datetime
 
-PAGE_NUMBER_TO_STOP_AT = "40"
 
 
 
-f = codecs.open("nakazy.html", "w", "utf-8")
+#https://www.tutorialspoint.com/python/time_strftime.htm
+f = codecs.open("nakazy_{}.html".format(datetime.datetime.now().strftime("%d-%b-%Y")), 
+            "w", "utf-8")
 f.write(globals.HTML_PREAMBULE)
 f.write(datetime.datetime.now().strftime("%d:%m:%Y %H:%M"))
 f.write("\n\n<br><br>")
@@ -31,15 +32,13 @@ globals.NAKAZY_FILE_TO_WRITE = f
 
 new_page_num = "-1"
 r = getPage(globals.BASE_PAGE_URL, globals.PAGE_FILES_DIR)
-new_page_num = parseNakazPage(r)
+new_page_num = int(parseNakazPage(r))
 print("New page Num:{}".format(new_page_num))
-while new_page_num <> PAGE_NUMBER_TO_STOP_AT:
+while new_page_num <= globals.PAGE_NUMBER_TO_STOP_AT:
     r = getPage(globals.BASE_PAGE_URL+"page={}".format(new_page_num),
             globals.PAGE_FILES_DIR)
-    new_page_num = parseNakazPage(r)
+    new_page_num = int(parseNakazPage(r))
     print("New new page num:{}".format(new_page_num))
-
-
 
 globals.NAKAZY_FILE_TO_WRITE.write(globals.HTML_AFTERAMBLE)
 globals.NAKAZY_FILE_TO_WRITE.close()

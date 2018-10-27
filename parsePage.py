@@ -6,7 +6,7 @@ import logging, os, codecs, hashlib
 import globals 
 from utils import getPage, downloadFile
 
-def parseAndDownloadNakaz(nakaz_dir, nakazURL, nakazName):
+def parseAndDownloadNakaz(nakaz_dir, nakazURL, nakazName, linkHash):
     f = codecs.open(nakaz_dir+"info.txt", "w", "utf-8")
     f.write(u'\ufeff')
     f.write("Name:\n"+nakazName+"\n\n")
@@ -25,7 +25,10 @@ def parseAndDownloadNakaz(nakaz_dir, nakazURL, nakazName):
     )
 
     globals.NAKAZY_FILE_TO_WRITE.write(
-        "MOZ site URL: <div><a href=\"{}\">{}</a></div>".format(nakazURL,nakazURL)
+        "MOZ site URL: <div><a href=\"{}\">{}</a></div>".format(nakazURL, nakazURL)
+    )
+    globals.NAKAZY_FILE_TO_WRITE.write(
+        "DIR: <div>{}</div>".format(linkHash)
     )
 
     
@@ -36,11 +39,8 @@ def parseAndDownloadNakaz(nakaz_dir, nakazURL, nakazName):
     #Getting links
     nakaz_soup = BeautifulSoup(nakaz_content)
     f.write("Text:\n")
-    # print (nakaz_soup.select("div.editor"))
     body_text = ""
-    # for string in nakaz_soup.select("div.editor")[0].stripped_strings:
     for string in nakaz_soup.select("div.editor")[0].strings:
-        # print(repr(string))
         if len(string)>1 and string<>"&nbsp":
             body_text += string+"\n"
         f.write(string)
@@ -83,7 +83,8 @@ def parseNakazPage(page_html):
         logging.debug(nakaz_actual_link)
 
         # dir_name_short = nakaz_name[:DIR_NAME_LEN]+""
-        dir_name_short = hashlib.sha224(nakaz_actual_link).hexdigest()+"\\"
+        link_hash = hashlib.sha224(nakaz_actual_link).hexdigest()
+        dir_name_short = link_hash+"\\"
         # full_dir_name = u"{}{:04d}. {}\\".format(RESULT_FILES_DIR, nakaz_counter, dir_name_short.strip())
         full_dir_name = globals.RESULT_FILES_DIR+dir_name_short
 
@@ -107,7 +108,7 @@ def parseNakazPage(page_html):
             os.mkdir(full_dir_name)
         
         parseAndDownloadNakaz(full_dir_name, nakaz_actual_link,
-                nakaz_name)
+                nakaz_name, link_hash)
 
         globals.NAKAZY_FILE_TO_WRITE.write("</div>")
             
